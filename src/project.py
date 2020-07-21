@@ -10,7 +10,7 @@ class Project:
 
     base_dir: Path = Path(__file__).parents[0]
     inputs_dir = base_dir / "inputs"
-    checkpoint_dir = base_dir / "checkpoint"
+    checkpoint_dir = base_dir / "checkpoints"
 
     def __post_init__(self):
         # create the directories if they don't exist

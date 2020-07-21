@@ -44,7 +44,7 @@ def main(config):
         data.split_folds(project.inputs_dir)
 
     fold = config["val_fold"]
-    print("Valid fold -> ", config["val_fold"])
+    logging.info(f"val fold = {fold}")
 
     df_folds = pd.read_csv(project.inputs_dir / "df_folds.csv")
     marking = pd.read_csv(project.inputs_dir / "marking.csv")
@@ -112,10 +112,14 @@ def main(config):
             f"|EPOCH {epoch+1}| TRAIN_LOSS {train_loss.avg}| VALID_LOSS {valid_loss.avg}|"
         )
 
+        logging.info(
+            f"|EPOCH {epoch+1}| TRAIN_LOSS {train_loss.avg}| VALID_LOSS {valid_loss.avg}|"
+        )
+
         if valid_loss.avg < best_loss:
             best_loss = valid_loss.avg
             print(f"New best model in epoch {epoch+1}")
-            torch.save(model.state_dict(), f"detr_best_{fold}.pth")
+            torch.save(model.state_dict(), project.checkpoint_dir / f"detr_best_{fold}.pth")
 
 
 def train_fn(data_loader, model, criterion, optimizer, epoch, config):
